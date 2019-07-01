@@ -46,9 +46,6 @@ public class HikUtil {
     private static int m_iPlaybackID = -1;
     private static int m_iPort = -1;
     private static int m_iStartChan = 0;
-
-    private int m_iChanNum = 0;
-
     private SurfaceView mSurfaceView;
     private TextureView mtextureView;
     public String mIpAddress;
@@ -135,13 +132,6 @@ public class HikUtil {
      * 登出设备
      */
     public void logoutDevice() {
-//        if (HCNetSDK.getInstance().NET_DVR_Logout_V30(logId)) {
-//            playId = -1;
-//            Log.i(TAG, "登出设备成功！");
-//        } else {
-//            playId = 0;
-//            Log.e(TAG, "登出设备失败！");
-//        }
         // 是否登出
         if (!HCNetSDK.getInstance().NET_DVR_Logout_V30(logId)) {
             Log.e(TAG, " 用户注销失败!");
@@ -154,7 +144,7 @@ public class HikUtil {
     /**
      * 释放海康SDK
      */
-    public void freeSDK() {
+    public static void freeSDK() {
         // 清理缓存
         if (HCNetSDK.getInstance().NET_DVR_Cleanup()) {
             Log.i(TAG, "释放SDK资源成功！");
@@ -498,7 +488,6 @@ public class HikUtil {
                     return false;
                 }
 
-//                loginButton.setText("注销");
                 Log.i(TAG, "登录成功 ！");
                 return true;
             } else {
@@ -509,7 +498,6 @@ public class HikUtil {
                 } else {
                     Log.e(TAG, "用户注销成功！");
                 }
-//                loginButton.setText("登录");
                 logId = -1;
                 return true;
             }

@@ -10,8 +10,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
-
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     //----------------------------------------------------------------------------------------------
@@ -20,12 +18,14 @@ public class MainActivity extends AppCompatActivity {
     private static final int PLAY_HIK_STREAM_CODE = 1001;
     private static final int PLAY_HIK_STREAM_CODE_2 = 1002;
     private String IP_ADDRESS = "172.18.36.157";
+//    private String IP_ADDRESS = "172.18.36.158";
     private int PORT = 8000;
     private String USER_NAME = "admin";
     private String PASSWORD = "ketan123";
     private HikUtil hikUtil;
-    //    private FloatingActionButton actionA, actionB, actionC, actionD;
-    private Button actionA, actionB, actionC, actionD;
+    private int channel = 0;
+    //    private FloatingActionButton btn_up, btn_down, btn_left, btn_right;
+    private Button btn_up, btn_down, btn_left, btn_right, btn_in, btn_out, btn_switch;
     //----------------------------------------------------------------------------------------------
 
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -62,18 +62,37 @@ public class MainActivity extends AppCompatActivity {
 
         //配置网络摄像头参数
         hikUtil.setDeviceData(IP_ADDRESS, PORT, USER_NAME, PASSWORD);
-
         //登录设备
         hikUtil.loginDevice(mHandler, PLAY_HIK_STREAM_CODE);
-
         //播放设备
         hikUtil.playOrStopStream();
     }
 
+    private void switchVedio() {
+        if (channel == 0) {
+            channel = 1;
+            IP_ADDRESS = "172.18.36.157";
+        } else {
+            channel = 0;
+            IP_ADDRESS = "172.18.36.158";
+        }
+
+        HikUtil.initSDK();
+        hikUtil = new HikUtil();
+        hikUtil.initView(video_surfaceview);
+        //配置网络摄像头参数
+        hikUtil.setDeviceData(IP_ADDRESS, PORT, USER_NAME, PASSWORD);
+        //登录设备
+        hikUtil.loginDevice(mHandler, PLAY_HIK_STREAM_CODE);
+        //播放设备
+        hikUtil.playOrStopStream();
+    }
+
+
     @SuppressLint("ClickableViewAccessibility")
     private void setOnTouchListener() {
         //摄像头向上转动
-        actionA.setOnTouchListener(new View.OnTouchListener() {
+        btn_up.setOnTouchListener(new View.OnTouchListener() {
             //由于调用向左转动的方法，会停不下来，所以这里我加了监听点击按键不放即调用启动向左转动方法，松开按键即调用停止向左转动的方法
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -86,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //摄像头向下转动
-        actionB.setOnTouchListener(new View.OnTouchListener() {
+        btn_down.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     HikUtil.startdown();
@@ -98,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //摄像头左转
-        actionC.setOnTouchListener(new View.OnTouchListener() {
+        btn_left.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     HikUtil.startleft();
@@ -110,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //摄像头右转
-        actionD.setOnTouchListener(new View.OnTouchListener() {
+        btn_right.setOnTouchListener(new View.OnTouchListener() {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     HikUtil.startright();
@@ -120,17 +139,67 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        //焦距变大
+        btn_in.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    HikUtil.startfd();
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    HikUtil.stopfd();
+                }
+                return false;
+            }
+        });
+
+        //焦距变小
+        btn_out.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    HikUtil.startsx();
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    HikUtil.stopsx();
+                }
+                return false;
+            }
+        });
+
+        btn_switch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hikUtil.stopPlay();
+                //注销设备
+                hikUtil.logoutDevice();
+                //释放sdk资源
+                hikUtil.freeSDK();
+                switchVedio();
+            }
+        });
     }
 
     private void initView() {
-//        actionA = findViewById(R.id.action_up);
-//        actionB = findViewById(R.id.action_down);
-//        actionC = findViewById(R.id.action_left);
-//        actionD = findViewById(R.id.action_right);
-        actionA = findViewById(R.id.btn_up);
-        actionB = findViewById(R.id.btn_down);
-        actionC = findViewById(R.id.btn_left);
-        actionD = findViewById(R.id.btn_right);
+//        btn_up = findViewById(R.id.action_up);
+//        btn_down = findViewById(R.id.action_down);
+//        btn_left = findViewById(R.id.action_left);
+//        btn_right = findViewById(R.id.action_right);
+        btn_up = findViewById(R.id.btn_up);
+        btn_down = findViewById(R.id.btn_down);
+        btn_left = findViewById(R.id.btn_left);
+        btn_right = findViewById(R.id.btn_right);
+        btn_in = findViewById(R.id.btn_in);
+        btn_out = findViewById(R.id.btn_out);
         video_surfaceview = findViewById(R.id.video_surfaceview);
+        btn_switch = findViewById(R.id.btn_switch);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //停止播放
+        hikUtil.stopPlay();
+        //注销设备
+        hikUtil.logoutDevice();
+        //释放sdk资源
+        hikUtil.freeSDK();
     }
 }
