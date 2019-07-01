@@ -47,6 +47,8 @@ public class HikUtil {
     private static int m_iPort = -1;
     private static int m_iStartChan = 0;
 
+    private int m_iChanNum = 0;
+
     private SurfaceView mSurfaceView;
     private TextureView mtextureView;
     public String mIpAddress;
@@ -77,7 +79,6 @@ public class HikUtil {
      * @return
      */
     public static boolean initSDK() {
-
         if (!HCNetSDK.getInstance().NET_DVR_Init()) {
             Log.e(TAG, "HCNetSDK ---------初始化失败!");
             return false;
@@ -206,6 +207,9 @@ public class HikUtil {
         }
     }
 
+    /**
+     * 控制台开始左转
+     */
     public static void startleft() {
         if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.PAN_LEFT, 0)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
@@ -214,6 +218,9 @@ public class HikUtil {
         }
     }
 
+    /**
+     * 控制台停止左转
+     */
     public static void stopleft() {
         if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.PAN_LEFT, 1)) {
             Log.e(TAG,
@@ -223,6 +230,9 @@ public class HikUtil {
         }
     }
 
+    /**
+     * 控制台开始右转
+     */
     public static void startright() {
         if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.PAN_RIGHT, 0)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
@@ -231,6 +241,9 @@ public class HikUtil {
         }
     }
 
+    /**
+     * 控制台停止右转
+     */
     public static void stopright() {
         if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.PAN_RIGHT, 1)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
@@ -241,8 +254,7 @@ public class HikUtil {
 
     public static void startfd() {
         if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.ZOOM_IN, 0)) {
-            Log.e(TAG,
-                    "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
+            Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
             Log.i(TAG, "start ZOOM_IN succ");
         }
@@ -279,9 +291,7 @@ public class HikUtil {
             public void surfaceCreated(SurfaceHolder holder) {
                 mSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
                 Log.i(TAG, "surface is created" + m_iPort);
-                if (-1 == m_iPort) {
-                    return;
-                }
+                if (-1 == m_iPort) return;
                 Surface surface = holder.getSurface();
                 if (surface.isValid()) {
                     if (!Player.getInstance().setVideoWindow(m_iPort, 0, holder)) {
@@ -300,9 +310,7 @@ public class HikUtil {
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
                 Log.i(TAG, "Player setVideoWindow release!" + m_iPort);
-                if (-1 == m_iPort) {
-                    return;
-                }
+                if (-1 == m_iPort) return;
                 if (holder.getSurface().isValid()) {
                     if (!Player.getInstance().setVideoWindow(m_iPort, 0, null)) {
                         Log.e(TAG, "播放器设置或销毁显示区域失败!");
@@ -345,13 +353,11 @@ public class HikUtil {
      * 播放或者停止播放视频流
      */
     public void playOrStopStream() {
-
         if (logId < 0) {
             Log.e(TAG, "请先登录设备");
             return;
         }
         if (playId < 0) {   //播放
-
             RealPlayCallBack fRealDataCallBack = getRealPlayerCbf();
             if (fRealDataCallBack == null) {
                 Log.e(TAG, "fRealDataCallBack object is failed!");
@@ -468,9 +474,7 @@ public class HikUtil {
                     }
                 }
             }
-
         }
-
     }
 
     private boolean login(String ipAddress, int portNum, String userName, String passWord) {
@@ -522,7 +526,7 @@ public class HikUtil {
             Log.e(TAG, "实例化设备信息(NET_DVR_DEVICEINFO_V30)失败!");
             return -1;
         }
-        // call NET_DVR_Login_v30 to login on, port 8000 as default
+
         int iLogID = HCNetSDK.getInstance().NET_DVR_Login_V30(ipAddress, portNum, userName, passWord, m_oNetDvrDeviceInfoV30);
         if (iLogID < 0) {
             Log.e(TAG, "网络设备登录失败!-------------Err:" + HCNetSDK.getInstance().NET_DVR_GetLastError());

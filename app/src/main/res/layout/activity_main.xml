@@ -1,139 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingEnd="7dp"
-    android:paddingStart="7dp">
+    android:layout_height="match_parent">
+
+    <SurfaceView
+        android:id="@+id/video_surfaceview"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentLeft="true" />
+
+    <!--<com.getbase.floatingactionbutton.FloatingActionsMenu-->
+        <!--android:id="@+id/multiple_actions"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/video_surfaceview"-->
+        <!--fab:fab_expandDirection="right">-->
+
+        <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
+            <!--android:id="@+id/action_right"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/design_default_color_primary_dark"-->
+            <!--fab:fab_size="mini"-->
+            <!--fab:fab_title="右转" />-->
+
+        <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
+            <!--android:id="@+id/action_left"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--fab:fab_size="mini"-->
+            <!--fab:fab_title="左转" />-->
+
+        <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
+            <!--android:id="@+id/action_down"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--fab:fab_size="mini"-->
+            <!--fab:fab_title="向下" />-->
+
+        <!--<com.getbase.floatingactionbutton.FloatingActionButton-->
+            <!--android:id="@+id/action_up"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--fab:fab_size="mini"-->
+            <!--fab:fab_title="向上" />-->
+    <!--</com.getbase.floatingactionbutton.FloatingActionsMenu>-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:gravity="center_horizontal"
+        android:layout_below="@id/video_surfaceview"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_Login"
-            android:layout_width="115dp"
+            android:id="@+id/btn_up"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="西南摄像机"
-            android:typeface="sans" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/Play"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <SurfaceView
-            android:id="@+id/Sur_Player"
-            android:layout_width="340dp"
-            android:layout_height="370dp"
-            android:background="#0000ff00" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
+            android:text="向上" />
 
         <Button
-            android:id="@+id/btn_Preview"
-            android:layout_width="150dp"
+            android:id="@+id/btn_down"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="46dp"
-            android:text="播放"
-            android:typeface="sans" />
+            android:text="向下" />
 
         <Button
-            android:id="@+id/btn_PTZ"
-            android:layout_width="150dp"
+            android:id="@+id/btn_left"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="转向"
-            android:typeface="normal" />
+            android:text="向左" />
+
+        <Button
+            android:id="@+id/btn_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="向右" />
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ID地址：" />
-
-        <EditText
-            android:id="@+id/et_ipAddr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="                       "
-            android:maxLength="15" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="账号：" />
-
-        <EditText
-            android:id="@+id/et_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="                       "
-            android:maxLength="15" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="密码：" />
-
-        <EditText
-            android:id="@+id/et_psd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="                       "
-            android:maxLength="15" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="端口号：" />
-
-        <EditText
-            android:id="@+id/et_port"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="                       "
-            android:maxLength="15" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_intent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="跳转Button" />
-
-</LinearLayout>
-
+</RelativeLayout>
