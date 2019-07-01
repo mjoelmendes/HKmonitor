@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <SurfaceView
+        android:id="@+id/video_surfaceview"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_alignParentLeft="true" />
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/multiple_actions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/video_surfaceview"
+        fab:fab_expandDirection="right">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            fab:fab_title="右转" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            fab:fab_title="左转" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            fab:fab_title="向下" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/action_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_size="mini"
+            fab:fab_title="向上" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+</RelativeLayout>
