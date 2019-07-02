@@ -97,6 +97,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="焦距变小" />
+
+        <Button
+            android:id="@+id/btn_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="暂停" />
+
+        <Button
+            android:id="@+id/btn_playback"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="回放" />
     </LinearLayout>
 
     <LinearLayout

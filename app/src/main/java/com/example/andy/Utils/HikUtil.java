@@ -1,4 +1,4 @@
-package com.example.yangjianlin.hkmonitor_3813;
+package com.example.andy.Utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -42,10 +42,11 @@ public class HikUtil {
     private static final int HIK_SUB_STREAM_CODE = 1;      //子码流
     private NET_DVR_DEVICEINFO_V30 m_oNetDvrDeviceInfoV30;
     private static int logId = -1;
-    private static int playId = -1;
+    public static int playId = -1;
     private static int m_iPlaybackID = -1;
     private static int m_iPort = -1;
     private static int m_iStartChan = 0;
+    private static int speed = 4;//云台速度
     private SurfaceView mSurfaceView;
     private TextureView mtextureView;
     public String mIpAddress;
@@ -80,8 +81,6 @@ public class HikUtil {
             Log.e(TAG, "HCNetSDK ---------初始化失败!");
             return false;
         }
-        //打印日志到本地，暂时不用打印
-//        HCNetSDK.getInstance().NET_DVR_SetLogToFile(3, "/mnt/sdcard/sdklog/", true);
         return true;
     }
 
@@ -121,10 +120,10 @@ public class HikUtil {
             Log.e(TAG, "释放播放端口失败！");
             return;
         }
-        // 播放端口复位
-        m_iPort = -1;
-        // 正在播放标记复位
-        playId = -1;
+
+        logId = -1;// 登陆端口复位
+        m_iPort = -1;// 播放端口复位
+        playId = -1;// 正在播放标记复位
         Log.i(TAG, "停止播放成功！");
     }
 
@@ -157,7 +156,7 @@ public class HikUtil {
      * 控制台开始上升
      */
     public static void startup() {
-        if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.TILT_UP, 0)) {
+        if (!HCNetSDK.getInstance().NET_DVR_PTZControlWithSpeed_Other(logId, m_iStartChan, PTZCommand.TILT_UP, 0,speed)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
             Log.i(TAG, "start TILT_UP succ");
@@ -168,7 +167,7 @@ public class HikUtil {
      * 控制台停止上升
      */
     public static void stopup() {
-        if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.TILT_UP, 1)) {
+        if (!HCNetSDK.getInstance().NET_DVR_PTZControlWithSpeed_Other(logId, m_iStartChan, PTZCommand.TILT_UP, 1,speed)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
             Log.i(TAG, "stop TILT_UP succ");
@@ -179,7 +178,7 @@ public class HikUtil {
      * 控制台开始下降
      */
     public static void startdown() {
-        if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.TILT_DOWN, 0)) {
+        if (!HCNetSDK.getInstance().NET_DVR_PTZControlWithSpeed_Other(logId, m_iStartChan, PTZCommand.TILT_DOWN, 0,speed)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
             Log.i(TAG, "start TILT_DOWN succ");
@@ -190,7 +189,7 @@ public class HikUtil {
      * 控制台停止下降
      */
     public static void stopdown() {
-        if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.TILT_DOWN, 1)) {
+        if (!HCNetSDK.getInstance().NET_DVR_PTZControlWithSpeed_Other(logId, m_iStartChan, PTZCommand.TILT_DOWN, 1,speed)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
             Log.i(TAG, "stop TILT_DOWN succ");
@@ -201,7 +200,7 @@ public class HikUtil {
      * 控制台开始左转
      */
     public static void startleft() {
-        if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.PAN_LEFT, 0)) {
+        if (!HCNetSDK.getInstance().NET_DVR_PTZControlWithSpeed_Other(logId, m_iStartChan, PTZCommand.PAN_LEFT, 0,speed)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
             Log.i(TAG, "start PAN_LEFT succ");
@@ -212,7 +211,7 @@ public class HikUtil {
      * 控制台停止左转
      */
     public static void stopleft() {
-        if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.PAN_LEFT, 1)) {
+        if (!HCNetSDK.getInstance().NET_DVR_PTZControlWithSpeed_Other(logId, m_iStartChan, PTZCommand.PAN_LEFT, 1,speed)) {
             Log.e(TAG,
                     "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
@@ -224,7 +223,7 @@ public class HikUtil {
      * 控制台开始右转
      */
     public static void startright() {
-        if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.PAN_RIGHT, 0)) {
+        if (!HCNetSDK.getInstance().NET_DVR_PTZControlWithSpeed_Other(logId, m_iStartChan, PTZCommand.PAN_RIGHT, 0,speed)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
             Log.i(TAG, "start PAN_RIGHT succ");
@@ -235,7 +234,7 @@ public class HikUtil {
      * 控制台停止右转
      */
     public static void stopright() {
-        if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.PAN_RIGHT, 1)) {
+        if (!HCNetSDK.getInstance().NET_DVR_PTZControlWithSpeed_Other(logId, m_iStartChan, PTZCommand.PAN_RIGHT, 1,speed)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
             Log.i(TAG, "stop PAN_RIGHT succ");
@@ -243,7 +242,7 @@ public class HikUtil {
     }
 
     public static void startfd() {
-        if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.ZOOM_IN, 0)) {
+        if (!HCNetSDK.getInstance().NET_DVR_PTZControlWithSpeed_Other(logId, m_iStartChan, PTZCommand.ZOOM_IN, 0,speed)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
             Log.i(TAG, "start ZOOM_IN succ");
@@ -251,7 +250,7 @@ public class HikUtil {
     }
 
     public static void stopfd() {
-        if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.ZOOM_IN, 1)) {
+        if (!HCNetSDK.getInstance().NET_DVR_PTZControlWithSpeed_Other(logId, m_iStartChan, PTZCommand.ZOOM_IN, 1,speed)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
             Log.i(TAG, "stop ZOOM_IN succ");
@@ -259,7 +258,7 @@ public class HikUtil {
     }
 
     public static void startsx() {
-        if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.ZOOM_OUT, 0)) {
+        if (!HCNetSDK.getInstance().NET_DVR_PTZControlWithSpeed_Other(logId, m_iStartChan, PTZCommand.ZOOM_OUT, 0,speed)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
             Log.i(TAG, "start ZOOM_OUT succ");
@@ -267,7 +266,7 @@ public class HikUtil {
     }
 
     public static void stopsx() {
-        if (!HCNetSDK.getInstance().NET_DVR_PTZControl_Other(logId, m_iStartChan, PTZCommand.ZOOM_OUT, 1)) {
+        if (!HCNetSDK.getInstance().NET_DVR_PTZControlWithSpeed_Other(logId, m_iStartChan, PTZCommand.ZOOM_OUT, 1,speed)) {
             Log.e(TAG, "start PAN_LEFT failed with error code: " + HCNetSDK.getInstance().NET_DVR_GetLastError());
         } else {
             Log.i(TAG, "stop ZOOM_OUT succ");
@@ -357,7 +356,8 @@ public class HikUtil {
 
             NET_DVR_PREVIEWINFO previewInfo = new NET_DVR_PREVIEWINFO();
             previewInfo.lChannel = m_iStartChan;
-            previewInfo.dwStreamType = HIK_SUB_STREAM_CODE;   //子码流
+            previewInfo.dwStreamType = HIK_MAIN_STREAM_CODE;   //主码流
+//            previewInfo.dwStreamType = HIK_SUB_STREAM_CODE;   //子码流
             previewInfo.bBlocked = 1;
             // HCNetSDK start preview
             playId = HCNetSDK.getInstance().NET_DVR_RealPlay_V40(logId, previewInfo, fRealDataCallBack);
@@ -367,41 +367,8 @@ public class HikUtil {
             }
 
             Log.i(TAG, "NetSdk 播放成功 ！");
-//            mPlayButton.setText("停止");
-        } else {    //停止播放
-            if (playId < 0) {
-                Log.e(TAG, "m_iPlayID < 0");
-                return;
-            }
-
-            //  net sdk stop preview
-            if (!HCNetSDK.getInstance().NET_DVR_StopRealPlay(playId)) {
-                Log.e(TAG, "停止预览失败!----------------错误:" + HCNetSDK.getInstance().NET_DVR_GetLastError());
-                return;
-            }
-
-            playId = -1;
-            Player.getInstance().stopSound();
-            // player stop play
-            if (!Player.getInstance().stop(m_iPort)) {
-                Log.e(TAG, "-------------------暂停失败!");
-                return;
-            } else {
-                Log.e(TAG, "-------------------暂停成功!");
-            }
-
-            if (!Player.getInstance().closeStream(m_iPort)) {
-                Log.e(TAG, "-------------------关流失败!");
-                return;
-            }
-            if (!Player.getInstance().freePort(m_iPort)) {
-                Log.e(TAG, "-------------------释放播放端口失败!" + m_iPort);
-                return;
-            }
-            m_iPort = -1;
-            logId = -1;
-            playId = -1;
-//            mPlayButton.setText("播放");
+        } else {
+            stopPlay();//停止播放
         }
 
     }

@@ -1,6 +1,7 @@
-package com.example.yangjianlin.hkmonitor_3813;
+package com.example.andy.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +11,9 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.andy.Utils.HikUtil;
+import com.example.andy.R;
+
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     //----------------------------------------------------------------------------------------------
@@ -18,14 +22,13 @@ public class MainActivity extends AppCompatActivity {
     private static final int PLAY_HIK_STREAM_CODE = 1001;
     private static final int PLAY_HIK_STREAM_CODE_2 = 1002;
     private String IP_ADDRESS = "172.18.36.157";
-//    private String IP_ADDRESS = "172.18.36.158";
     private int PORT = 8000;
     private String USER_NAME = "admin";
     private String PASSWORD = "ketan123";
     private HikUtil hikUtil;
     private int channel = 0;
     //    private FloatingActionButton btn_up, btn_down, btn_left, btn_right;
-    private Button btn_up, btn_down, btn_left, btn_right, btn_in, btn_out, btn_switch;
+    private Button btn_up, btn_down, btn_left, btn_right, btn_in, btn_out, btn_switch, btn_stop, btn_playback;
     //----------------------------------------------------------------------------------------------
 
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -175,13 +178,32 @@ public class MainActivity extends AppCompatActivity {
                 switchVedio();
             }
         });
+
+        btn_stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (HikUtil.playId < 0) {
+                    btn_stop.setText("暂停");
+                } else {
+                    btn_stop.setText("播放");
+                }
+                //登录设备
+                hikUtil.loginDevice(mHandler, PLAY_HIK_STREAM_CODE);
+                //播放设备
+                hikUtil.playOrStopStream();
+            }
+        });
+
+        btn_playback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PlaybackActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initView() {
-//        btn_up = findViewById(R.id.action_up);
-//        btn_down = findViewById(R.id.action_down);
-//        btn_left = findViewById(R.id.action_left);
-//        btn_right = findViewById(R.id.action_right);
         btn_up = findViewById(R.id.btn_up);
         btn_down = findViewById(R.id.btn_down);
         btn_left = findViewById(R.id.btn_left);
@@ -190,6 +212,8 @@ public class MainActivity extends AppCompatActivity {
         btn_out = findViewById(R.id.btn_out);
         video_surfaceview = findViewById(R.id.video_surfaceview);
         btn_switch = findViewById(R.id.btn_switch);
+        btn_stop = findViewById(R.id.btn_stop);
+        btn_playback = findViewById(R.id.btn_playback);
     }
 
     @Override
